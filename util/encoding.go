@@ -1,4 +1,4 @@
-package enc
+package util
 
 import (
 	"bufio"
@@ -56,9 +56,9 @@ func Decode(b []byte, e string) (string, error) {
 }
 
 // string, encoding -> []byte
-func Encode(s, e string) (string, error) {
+func Encode(s, e string) ([]byte, error) {
 	enc := getEncoding(e)
-	return enc.NewEncoder().String(s)
+	return enc.NewEncoder().Bytes([]byte(s))
 }
 
 func getEncoding(enc string) encoding.Encoding {
