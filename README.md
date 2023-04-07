@@ -2,6 +2,6 @@
 
 ```go
 import (
-    util "https://github.com/imebase/goutil"
+    util "https://github.com/flowerime/goutil"
 )
 ```

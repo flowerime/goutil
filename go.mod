@@ -1,4 +1,4 @@
-module github.com/imebase/goutil
+module github.com/flowerime/goutil
 
 go 1.19
 
