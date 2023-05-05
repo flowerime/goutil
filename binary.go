@@ -1,23 +1,8 @@
-package util
+package ku
 
 import (
 	"encoding/binary"
-	"io"
 )
-
-// 读 2 个字节，按小端序转为 uint16
-func ReadUint16(r io.Reader) uint16 {
-	tmp := make([]byte, 2)
-	r.Read(tmp)
-	return binary.LittleEndian.Uint16(tmp)
-}
-
-// 读 4 个字节，按小端序转为 uint32
-func ReadUint32(r io.Reader) uint32 {
-	tmp := make([]byte, 4)
-	r.Read(tmp)
-	return binary.LittleEndian.Uint32(tmp)
-}
 
 // 字节（小端）转为整数
 func BytesToInt(b []byte) int {
@@ -28,16 +13,23 @@ func BytesToInt(b []byte) int {
 	return ret
 }
 
-// 将 uint32 转换为长度为 4 的字节切片
-func To4Bytes(i uint32) []byte {
+type integer interface {
+	int | int8 | int16 | int32 | int64 |
+		uint | uint8 | uint16 | uint32 | uint64
+}
+
+// 转换为长度为 4 的字节切片
+func To4Bytes[T integer](i T) []byte {
+	u32 := uint32(i)
 	ret := make([]byte, 4)
-	binary.LittleEndian.PutUint32(ret, i)
+	binary.LittleEndian.PutUint32(ret, u32)
 	return ret
 }
 
-// 将 uint16 转换为长度为 2 的字节切片
-func To2Bytes(i uint16) []byte {
+// 转换为长度为 2 的字节切片
+func To2Bytes[T integer](i T) []byte {
+	u16 := uint16(i)
 	ret := make([]byte, 2)
-	binary.LittleEndian.PutUint16(ret, i)
+	binary.LittleEndian.PutUint16(ret, u16)
 	return ret
 }

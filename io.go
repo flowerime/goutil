@@ -1,16 +1,14 @@
-package util
+package ku
 
 import (
 	"bufio"
 	"bytes"
+	"encoding/binary"
 	"io"
 	"os"
 
 	"github.com/gogs/chardet"
 	"golang.org/x/net/html/charset"
-	"golang.org/x/text/encoding"
-	"golang.org/x/text/encoding/simplifiedchinese"
-	"golang.org/x/text/encoding/unicode"
 )
 
 // 将字节流转换为 utf-8
@@ -48,33 +46,16 @@ func Read(path string) (io.Reader, error) {
 	return NewReader(f), nil
 }
 
-// []byte, encoding -> string
-func Decode(b []byte, e string) (string, error) {
-	enc := getEncoding(e)
-	b, err := enc.NewDecoder().Bytes(b)
-	return string(b), err
+// 读 2 个字节，按小端序转为 uint16
+func ReadUint16(r io.Reader) uint16 {
+	tmp := make([]byte, 2)
+	r.Read(tmp)
+	return binary.LittleEndian.Uint16(tmp)
 }
 
-// string, encoding -> []byte
-func Encode(s, e string) ([]byte, error) {
-	enc := getEncoding(e)
-	return enc.NewEncoder().Bytes([]byte(s))
-}
-
-func getEncoding(enc string) encoding.Encoding {
-	var encoding encoding.Encoding
-	switch enc {
-	case "UTF-16LE":
-		encoding = unicode.UTF16(unicode.LittleEndian, unicode.IgnoreBOM)
-	case "UTF-16BE":
-		encoding = unicode.UTF16(unicode.BigEndian, unicode.IgnoreBOM)
-	case "GBK":
-		encoding = simplifiedchinese.GBK
-	case "GB18030":
-		encoding = simplifiedchinese.GB18030
-	default:
-		encoding = unicode.UTF8
-	}
-	// fmt.Println(enc, encoding)
-	return encoding
+// 读 4 个字节，按小端序转为 uint32
+func ReadUint32(r io.Reader) uint32 {
+	tmp := make([]byte, 4)
+	r.Read(tmp)
+	return binary.LittleEndian.Uint32(tmp)
 }
