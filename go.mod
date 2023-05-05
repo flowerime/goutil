@@ -1,4 +1,4 @@
-module github.com/flowerime/ku
+module github.com/nopdan/ku
 
 go 1.19
 
