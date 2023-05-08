@@ -1,5 +1,16 @@
 package ku
 
+// 去除切片中的空元素
+func RemoveEmptyItems[T []any | string | map[any]any](slice []T) []T {
+	ret := make([]T, 0, len(slice))
+	for _, item := range slice {
+		if len(item) != 0 {
+			ret = append(ret, item)
+		}
+	}
+	return ret
+}
+
 // 检查元素是否在切片内
 func Contain[T comparable](slice []T, target T) bool {
 	for _, item := range slice {
