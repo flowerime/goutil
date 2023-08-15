@@ -13,18 +13,21 @@ import (
 
 // 判断字符串中是否全是汉字
 func IsHan(word string) bool {
-	flag := true
 	for _, r := range word {
 		if !uc.Is(uc.Han, r) {
-			flag = false
+			return false
 		}
 	}
-	return flag
+	return true
 }
 
 // 去除字符串中的所有空白字符
 func TrimSpace(s string) string {
+	if len(s) < 100 {
+		return strings.Join(strings.Fields(s), "")
+	}
 	var sb strings.Builder
+	sb.Grow(len(s))
 	for _, r := range s {
 		if !uc.IsSpace(r) {
 			sb.WriteRune(r)
@@ -66,9 +69,7 @@ func getEncoding(enc string) encoding.Encoding {
 
 // 获取文件名，不含路径和后缀
 func GetFileName(fp string) string {
-	name := filepath.Base(fp)
-	ext := filepath.Ext(fp)
-	return strings.TrimSuffix(name, ext)
+	return filepath.Base(strings.TrimSuffix(fp, filepath.Ext(fp)))
 }
 
 // 不同操作系统的换行符

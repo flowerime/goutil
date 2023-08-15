@@ -11,17 +11,7 @@ func RemoveEmptyItems[T []any | string | map[any]any](slice []T) []T {
 	return ret
 }
 
-// 检查元素是否在切片内
-func Contain[T comparable](slice []T, target T) bool {
-	for _, item := range slice {
-		if item == target {
-			return true
-		}
-	}
-	return false
-}
-
-// 切片去重
+// 切片去重，保留顺序
 func Unique[T comparable](slice []T) []T {
 	ret := make([]T, 0, len(slice))
 	hold := make(map[T]struct{}, len(slice))
