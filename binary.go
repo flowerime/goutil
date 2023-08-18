@@ -6,7 +6,11 @@ import (
 
 // 字节（小端）转为整数
 func BytesToInt(b []byte) int {
-	return int(binary.LittleEndian.Uint64(b))
+	var ret int
+	for i, v := range b {
+		ret |= int(v) << (i * 8)
+	}
+	return ret
 }
 
 type integer interface {
